@@ -58,4 +58,4 @@ Delete a task by its ID.
 
 ## Author
 
-Built by Victoria Maia — part of the Tempo interview technical demo.
+Built by Victoria Maia.
