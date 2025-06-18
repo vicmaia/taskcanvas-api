@@ -1,10 +1,10 @@
-# 🛠️ TaskCanvas API
+# TaskCanvas API
 
 This is the lightweight backend for the **TaskCanvas** project, built with **Node.js**, **Express**, and **MongoDB Atlas**. It exposes a simple REST API to manage tasks across different status categories — `todo`, `doing`, and `done`.
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 ```bash
 cd taskcanvas-api
@@ -16,7 +16,7 @@ The API will be available at: `http://localhost:4000`
 
 ---
 
-## 📦 Endpoints
+## Endpoints
 
 ### `GET /tasks`
 
@@ -51,7 +51,11 @@ Delete a task by its ID.
 
 ---
 
-## 🧠 Notes
+## Notes
 
 - All data is persisted to MongoDB Atlas — no data loss on restart.
 - See the frontend app in taskcanvas for the full experience.
+
+## Author
+
+Built by Victoria Maia — part of the Tempo interview technical demo.
