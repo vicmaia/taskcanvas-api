@@ -63,6 +63,30 @@ app.delete('/tasks/:id', async (req, res) => {
   }
 });
 
+// POST /ai/suggest - AI will suggest which task is priority
+app.post('/ai/suggest', async (req, res) => {
+  const { tasks } = req.body;
+  console.log("AI suggest body:", req.body);
+
+  const todos = tasks.filter(t => t.status === "todo");
+
+  if (todos.length === 0) {
+    return res.json({ suggestion: "🎉 No pending tasks. You're all caught up!" });
+  }
+
+  // Heuristic: pick task with most 'actionable' verb
+  const actionVerbs = ["write", "create", "call", "email", "fix", "update", "design", "review"];
+  const prioritized = todos.find(t =>
+    actionVerbs.some(v => t.text.toLowerCase().startsWith(v))
+  );
+
+  const suggestion = prioritized
+    ? `🔍 Suggested: "${prioritized.text}"`
+    : `🤔 Maybe start with: "${todos[0].text}"`;
+
+  res.json({ suggestion });
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`TaskCanvas API with MongoDB running at http://localhost:${PORT}`);
