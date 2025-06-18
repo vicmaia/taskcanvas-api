@@ -1,6 +1,6 @@
 # 🛠️ TaskCanvas API
 
-This is the lightweight backend for the TaskCanvas project, built with Node.js and Express. It provides a minimal REST API for task management.
+This is the lightweight backend for the **TaskCanvas** project, built with **Node.js**, **Express**, and **MongoDB Atlas**. It exposes a simple REST API to manage tasks across different status categories — `todo`, `doing`, and `done`.
 
 ---
 
@@ -19,11 +19,14 @@ The API will be available at: `http://localhost:4000`
 ## 📦 Endpoints
 
 ### `GET /tasks`
+
 Returns all tasks.
 
 ### `POST /tasks`
+
 Create a new task.  
 **Body:**
+
 ```json
 {
   "text": "New task",
@@ -32,8 +35,10 @@ Create a new task.
 ```
 
 ### `PATCH /tasks/:id`
+
 Update the status of a task.  
 **Body:**
+
 ```json
 {
   "status": "done"
@@ -41,11 +46,12 @@ Update the status of a task.
 ```
 
 ### `DELETE /tasks/:id`
+
 Delete a task by its ID.
 
 ---
 
 ## 🧠 Notes
 
-- This API uses in-memory storage, so all tasks reset on restart.
-- Easily extendable to use file storage or connect to a database like MongoDB or PostgreSQL.
+- All data is persisted to MongoDB Atlas — no data loss on restart.
+- See the frontend app in taskcanvas for the full experience.
