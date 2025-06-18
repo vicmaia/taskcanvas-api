@@ -71,7 +71,7 @@ app.post('/ai/suggest', async (req, res) => {
   const todos = tasks.filter(t => t.status === "todo");
 
   if (todos.length === 0) {
-    return res.json({ suggestion: "🎉 No pending tasks. You're all caught up!" });
+    return res.json({ suggestion: "No pending tasks. You're all caught up!" });
   }
 
   // Heuristic: pick task with most 'actionable' verb
@@ -81,8 +81,8 @@ app.post('/ai/suggest', async (req, res) => {
   );
 
   const suggestion = prioritized
-    ? `🔍 Suggested: "${prioritized.text}"`
-    : `🤔 Maybe start with: "${todos[0].text}"`;
+    ? `Suggested: "${prioritized.text}"`
+    : `Maybe start with: "${todos[0].text}"`;
 
   res.json({ suggestion });
 });
