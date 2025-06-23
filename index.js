@@ -3,48 +3,49 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from "dotenv";
 
-// Load environment variables from .env file
+// Activate dotenv so we can use process.env.MONGO_URI
 dotenv.config();
+
+// Create an instance of an Express application
 const app = express();
 const PORT = 4000;
 
-// Middleware to enable CORS and JSON parsing
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB using connection string from .env
+// Connect to MongoDB using the connection string in .env
 mongoose.connect(process.env.MONGO_URI);
 
-// Define Mongoose schema and model for a Task
+// Define the structure of a task in MongoDB
 const taskSchema = new mongoose.Schema({
   text: String, // Task description
-  status: { type: String, default: 'todo' } // Task status: todo | doing | done
+  status: { type: String, default: 'todo' } // Status: 'todo', 'doing', or 'done'
 });
 
-const Task = mongoose.model('Task', taskSchema);
+const Task = mongoose.model('Task', taskSchema); // Create a Task model based on the schema
 
-// GET /tasks - Retrieve all tasks
+// GET all tasks
 app.get('/tasks', async (req, res) => {
-  const tasks = await Task.find();
-  res.json(tasks);
+  const tasks = await Task.find(); // Fetch all tasks from the DB
+  res.json(tasks); // Return them as JSON
 });
 
-// POST /tasks - Create a new task
+// POST a new task
 app.post('/tasks', async (req, res) => {
   const { text, status } = req.body;
-  const newTask = new Task({ text, status: status || 'todo' });
-  await newTask.save();
-  res.status(201).json(newTask);
+  const newTask = new Task({ text, status: status || 'todo' }); // Default status: 'todo'
+  await newTask.save(); // Save to DB
+  res.status(201).json(newTask); // Return the new task
 });
 
-// PATCH /tasks/:id - Update task status by ID
+// PATCH: Update task status
 app.patch('/tasks/:id', async (req, res) => {
   try {
     const { status } = req.body;
     const updated = await Task.findByIdAndUpdate(
       req.params.id,
       { status },
-      { new: true }
+      { new: true } // Return the updated task
     );
     if (!updated) return res.status(404).json({ error: 'Not found' });
     res.json(updated);
@@ -53,7 +54,7 @@ app.patch('/tasks/:id', async (req, res) => {
   }
 });
 
-// DELETE /tasks/:id - Delete task by ID
+// DELETE a task by ID
 app.delete('/tasks/:id', async (req, res) => {
   try {
     await Task.findByIdAndDelete(req.params.id);
@@ -63,7 +64,7 @@ app.delete('/tasks/:id', async (req, res) => {
   }
 });
 
-// POST /ai/suggest - AI will suggest which task is priority
+// POST: Suggest which task to do next
 app.post('/ai/suggest', async (req, res) => {
   const { tasks } = req.body;
   console.log("AI suggest body:", req.body);
@@ -74,7 +75,7 @@ app.post('/ai/suggest', async (req, res) => {
     return res.json({ suggestion: "No pending tasks. You're all caught up!" });
   }
 
-  // Heuristic: pick task with most 'actionable' verb
+  // Suggest tasks that start with action verbs
   const actionVerbs = ["write", "create", "call", "email", "fix", "update", "design", "review"];
   const prioritized = todos.find(t =>
     actionVerbs.some(v => t.text.toLowerCase().startsWith(v))
@@ -87,7 +88,8 @@ app.post('/ai/suggest', async (req, res) => {
   res.json({ suggestion });
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`TaskCanvas API with MongoDB running at http://localhost:${PORT}`);
 });
+
+export default app;
