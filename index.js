@@ -13,7 +13,7 @@ const PORT = 4000;
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB using the connection string in .env
+// Connect to MongoDB using the connection string in .env file
 mongoose.connect(process.env.MONGO_URI);
 
 // Define the structure of a task in MongoDB
